@@ -19,6 +19,12 @@ const SearchLayout = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   useEffect(() => {
     setSearchValue('');
   }, [q]);
@@ -31,6 +37,7 @@ const SearchLayout = ({ children }: { children: ReactNode }) => {
           placeholder="검색어를 입력하세요..."
           onChange={handleInput}
           value={searchValue}
+          onKeyDown={handleKeyDown}
         />
         <button onClick={handleSearch}>검색</button>
       </div>

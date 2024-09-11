@@ -6,13 +6,7 @@ const GlobalLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className={style.container}>
       <header>
-        <Link
-          className={style.logo}
-          href={'/'}
-          style={{
-            color: 'rgb(229,9,20)',
-          }}
-        >
+        <Link className={style.logo} href={'/'}>
           ONEBITE CINEMA
         </Link>
       </header>
