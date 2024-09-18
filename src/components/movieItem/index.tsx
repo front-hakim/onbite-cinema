@@ -3,17 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const MovieItem = (props: MovieData) => {
-  const {
-    id,
-    title,
-    subTitle,
-    description,
-    releaseDate,
-    company,
-    genres,
-    runtime,
-    posterImgUrl,
-  } = props;
+  const { id, posterImgUrl } = props;
 
   return (
     <Link href={`/movie/${id}`}>
