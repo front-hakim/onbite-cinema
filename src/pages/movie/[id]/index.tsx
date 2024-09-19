@@ -1,8 +1,25 @@
 import React from 'react';
 import style from '@/styles/detail.module.css';
-import detail from '@/mocks/detail.json';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import fetchDetailMovies from '@/lib/fetch-detail-movies';
 
-const Detail = () => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const id = context.params!.id;
+
+  const detail = await fetchDetailMovies(Number(id));
+
+  return {
+    props: { detail },
+  };
+};
+
+const Detail = ({
+  detail,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  if (!detail) return '문제가 발생했습니다. 다시 시도해주세요.';
+
   const {
     company,
     description,
@@ -12,11 +29,17 @@ const Detail = () => {
     runtime,
     subTitle,
     title,
-  } = detail[0];
+  } = detail;
 
   return (
     <div className={style.container}>
-      <div className={style.background}>
+      <div
+        className={style.background}
+        style={{
+          background: `url(${posterImgUrl}) center no-repeat`,
+          backgroundSize: 'cover',
+        }}
+      >
         <img src={posterImgUrl} alt={title} />
       </div>
       <h3>{title}</h3>

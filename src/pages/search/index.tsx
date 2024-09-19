@@ -1,21 +1,29 @@
 import SearchLayout from '@/components/search-layout';
-import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
-import allCienema from '@/mocks/all.json';
 import MovieItem from '@/components/movieItem';
 import style from '@/styles/search-result.module.css';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import fetchSearchMovies from '@/lib/fetch-search-movies';
+import { MovieData } from '@/types';
 
-const Search = () => {
-  const router = useRouter();
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const q = context.query.q;
 
-  const { q } = router.query;
+  const result = await fetchSearchMovies(q as string);
 
-  const result =
-    typeof q === 'string' ? allCienema.filter((i) => i.title.includes(q)) : [];
+  return {
+    props: { result },
+  };
+};
 
+const Search = ({
+  result,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className={style.container}>
-      {result.map((item) => (
+      {result.map((item: MovieData) => (
         <MovieItem key={item.id} {...item} />
       ))}
     </div>

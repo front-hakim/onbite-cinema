@@ -3,9 +3,6 @@
 }
 
 .background {
-  background: url('https://media.themoviedb.org/t/p/w300_and_h450_face/4Zb4Z2HjX1t5zr1qYOTdVoisJKp.jpg')
-    no-repeat center;
-  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
