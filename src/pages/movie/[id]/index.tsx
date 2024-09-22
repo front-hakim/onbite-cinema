@@ -3,6 +3,7 @@ import style from '@/styles/detail.module.css';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import fetchDetailMovies from '@/lib/fetch-detail-movies';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 export const getStaticPaths = () => {
   return {
@@ -42,24 +43,32 @@ const Detail = ({ detail }: InferGetStaticPropsType<typeof getStaticProps>) => {
   } = detail;
 
   return (
-    <div className={style.container}>
-      <div
-        className={style.background}
-        style={{
-          background: `url(${posterImgUrl}) center no-repeat`,
-          backgroundSize: 'cover',
-        }}
-      >
-        <img src={posterImgUrl} alt={title} />
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={posterImgUrl} />
+      </Head>
+      <div className={style.container}>
+        <div
+          className={style.background}
+          style={{
+            background: `url(${posterImgUrl}) center no-repeat`,
+            backgroundSize: 'cover',
+          }}
+        >
+          <img src={posterImgUrl} alt={title} />
+        </div>
+        <h3>{title}</h3>
+        <p>
+          {releaseDate} / {genres.join(', ')} / {runtime}분
+        </p>
+        <p>{company}</p>
+        <h4>{subTitle}</h4>
+        <p>{description}</p>
       </div>
-      <h3>{title}</h3>
-      <p>
-        {releaseDate} / {genres.join(', ')} / {runtime}분
-      </p>
-      <p>{company}</p>
-      <h4>{subTitle}</h4>
-      <p>{description}</p>
-    </div>
+    </>
   );
 };
 
