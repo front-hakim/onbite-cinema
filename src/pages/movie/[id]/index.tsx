@@ -1,11 +1,17 @@
 import React from 'react';
 import style from '@/styles/detail.module.css';
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import fetchDetailMovies from '@/lib/fetch-detail-movies';
+import { useRouter } from 'next/router';
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getStaticPaths = () => {
+  return {
+    paths: [{ params: { id: '995926' } }],
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params!.id;
 
   const detail = await fetchDetailMovies(Number(id));
@@ -15,9 +21,13 @@ export const getServerSideProps = async (
   };
 };
 
-const Detail = ({
-  detail,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+// 매 요청마다 새로운 데이터를 보여주기 보다는
+// id에 해당하는 데이터만 보여주면 되는 페이지이기 때문에 getStaticProps 설정
+const Detail = ({ detail }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
+  const isLoading = router.isFallback;
+
+  if (isLoading) return 'Loading...';
   if (!detail) return '문제가 발생했습니다. 다시 시도해주세요.';
 
   const {
